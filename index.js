@@ -54,9 +54,9 @@ client.on('messageCreate', async (message) => {
                             await user.roles.remove(roles);
                             await user.roles.add(role).catch((error) => {
                                             console.error(error);
-                                            message.reply(`Hình như sếp chưa thêm quyền quản lý role cho em thì phải 🥹:`);
+                                            message.reply(`Hình như sếp chưa thêm quyền quản lý role cho em thì phải 🥹 hoặc chưa để role em cao hơn.`);
                                         });
-                            await message.channel.send(`Đã nhốt đồng chí <@${user.user.id}> vào tù 🫡.`);
+                            await message.channel.send(`Đã nhốt đồng chí <@${user.user.id}> vào tù 🫡 vì gay.`);
                             setTimeout( async () => {
                                         await user.roles.add(roles);
                                         await user.roles.remove(role);
@@ -64,14 +64,13 @@ client.on('messageCreate', async (message) => {
                         }
                     }
                 } else {
-                    message.reply("Không tìm thấy role để mute thưa sếp 😗 ");
+                    return message.reply("Không tìm thấy role để mute thưa sếp 😗 ");
                 }
             } catch (error) {
                 console.error(error);
             }
         } else {
-            await message.reply("Xin lỗi đồng chí không có quyền dùng lệnh này 😬");
-            return;
+            return message.reply("Xin lỗi đồng chí không có quyền dùng lệnh này 😬");
         }
     }
 });
