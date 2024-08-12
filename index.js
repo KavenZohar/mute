@@ -60,7 +60,7 @@ client.on('messageCreate', async (message) => {
                             setTimeout( async () => {
                                         await user.roles.add(roles);
                                         await user.roles.remove(role);
-                                    }, 10000);
+                                    }, 3600000);
                         }
                     }
                 } else {
