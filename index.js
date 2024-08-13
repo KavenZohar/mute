@@ -14,8 +14,6 @@ const client = new Client({
     ]
 });
 
-let timeOut;
-
 app.get('/', (req, res) => {
     res.send('Kaven is online!');
 });
