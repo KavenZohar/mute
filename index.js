@@ -1,10 +1,20 @@
 import dotenv from "dotenv";
 dotenv.config();
-import {Client, GatewayIntentBits} from "discord.js";
 import express from 'express';
-
-const token = process.env.TOKEN;
 const app = express();
+app.get('/', (req, res) => {
+    res.send('Kaven is online!');
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Project is running on port ${PORT}!`);
+});
+
+import {Client, GatewayIntentBits} from "discord.js";
+import { imageUrl } from "./images/images.js";
+
+const img = imageUrl;
+const token = process.env.TOKEN;
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -14,14 +24,6 @@ const client = new Client({
     ]
 });
 
-app.get('/', (req, res) => {
-    res.send('Kaven is online!');
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Project is running on port ${PORT}!`);
-});
 
 const roleName = "lo gạy";
 const modRole = "supa mod";
@@ -71,6 +73,21 @@ client.on('messageCreate', async (message) => {
             return message.reply("Xin lỗi đồng chí không có quyền dùng lệnh này 😬");
         }
     }
+
+    if(content.startsWith('?gx') || content.startsWith('<@919937221765775360> gx') || content.startsWith('<@919937221765775360>gx')) {
+        let random = Math.floor(Math.random() * img.length) + 1;
+        const image = img[random];
+        try {
+            await message.channel.send({ files: [image] }).catch((error) => {
+                console.error(error);
+                message.reply("Không có quyền gửi ảnh vào trong này 🌚");
+            });
+          } catch (error) {
+            console.error('Error sending image:', error);
+          }
+    }
+
+
 });
 
 client.login(token);
