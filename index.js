@@ -10,7 +10,7 @@ app.listen(PORT, () => {
     console.log(`Project is running on port ${PORT}!`);
 });
 
-import {Client, GatewayIntentBits} from "discord.js";
+import { Client, GatewayIntentBits, EmbedBuilder, embedLength } from "discord.js";
 import { imageUrl } from "./images/images.js";
 
 const img = imageUrl;
@@ -54,9 +54,12 @@ client.on('messageCreate', async (message) => {
                             await user.roles.remove(roles);
                             await user.roles.add(role).catch((error) => {
                                             console.error(error);
-                                            message.reply(`Hình như sếp chưa thêm quyền quản lý role cho em thì phải 🥹 hoặc chưa để role em cao hơn.`);
+                                            message.reply({embeds: [errorEmbed(`Hình như sếp chưa thêm quyền quản lý role cho em thì phải 🥹 hoặc chưa để role em cao hơn.`)]});
                                         });
-                            await message.channel.send(`Đã nhốt đồng chí <@${user.user.id}> vào tù 🫡 vì gay.`);
+                            const emBed = new EmbedBuilder()
+                                        .setColor('#00BEDC')
+                                        .setTitle(`Đã nhốt đồng chí <@${user.user.id}> vào tù 🫡 vì gay.`);
+                            await message.channel.send({embeds: [emBed]});
                             setTimeout( async () => {
                                         await user.roles.add(roles);
                                         await user.roles.remove(role);
@@ -64,13 +67,13 @@ client.on('messageCreate', async (message) => {
                         }
                     }
                 } else {
-                    return message.reply("Không tìm thấy role để mute thưa sếp 😗 ");
+                    return await message.reply({embeds: [await errorEmbed("Không tìm thấy role để mute thưa sếp 😗 ")]});
                 }
             } catch (error) {
                 console.error(error);
             }
         } else {
-            return message.reply("Xin lỗi đồng chí không có quyền dùng lệnh này 😬");
+            return await message.reply({embeds: [await errorEmbed("Xin lỗi đồng chí không có quyền dùng lệnh này 😬")]});
         }
     }
 
@@ -78,9 +81,12 @@ client.on('messageCreate', async (message) => {
         let random = Math.floor(Math.random() * img.length) + 1;
         const image = img[random];
         try {
-            await message.channel.send({ files: [image] }).catch((error) => {
+            const emBed = new EmbedBuilder()
+                .setColor('#00BEDC')
+                .setImage(image);
+            await message.channel.send({ embeds: [emBed] }).catch((error) => {
                 console.error(error);
-                message.reply("Không có quyền gửi ảnh vào trong này 🌚");
+                message.reply({embeds: [errorEmbed("Không có quyền gửi ảnh vào trong này 🌚")]});
             });
           } catch (error) {
             console.error('Error sending image:', error);
@@ -89,5 +95,12 @@ client.on('messageCreate', async (message) => {
 
 
 });
+
+async function errorEmbed(content) {
+    let emBed = new EmbedBuilder()
+        .setColor('Red')
+        .setDescription(content);
+    return emBed;
+}
 
 client.login(token);
