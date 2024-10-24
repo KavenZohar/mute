@@ -10,7 +10,7 @@ app.listen(PORT, () => {
     console.log(`Project is running on port ${PORT}!`);
 });
 
-import { Client, GatewayIntentBits, EmbedBuilder, embedLength } from "discord.js";
+import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
 import { imageUrl } from "./images/images.js";
 
 const img = imageUrl;
@@ -20,7 +20,7 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
+        GatewayIntentBits.MessageContent,
     ]
 });
 
@@ -58,7 +58,7 @@ client.on('messageCreate', async (message) => {
                                         });
                             const emBed = new EmbedBuilder()
                                         .setColor('#00BEDC')
-                                        .setTitle(`Đã nhốt đồng chí <@${user.user.id}> vào tù 🫡 vì gay.`);
+                                        .setDescription(`Đã nhốt đồng chí <@${user.user.id}> vào tù 🫡 vì gay.`);
                             await message.channel.send({embeds: [emBed]});
                             setTimeout( async () => {
                                         await user.roles.add(roles);
